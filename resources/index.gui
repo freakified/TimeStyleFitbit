@@ -1,0 +1,78 @@
+<svg class="background">
+  <svg id="clock_area" x="0" y="0" width="50%" height="100%">
+    <image id="digit_h1" href="digits/default/0.png"
+            width="90" height="123"
+            x="3" y="0"
+            fill="#ff5500" load="sync" />
+    <image id="digit_h2" href="digits/default/6.png"
+            width="90" height="123"
+            x="$-5" y="0"
+            fill="#ff5500" load="sync" />
+    <image id="digit_m1" href="digits/default/2.png"
+            width="90" height="123"
+            x="3" y="100%-123"
+            fill="#ff5500" load="sync" />
+    <image id="digit_m2" href="digits/default/3.png"
+            width="90" height="123"
+            x="$-5" y="100%-123"
+            fill="#ff5500" load="sync" />
+  </svg>
+  <!--       <rect y="0" x="0" width="100%" height="100%" fill="#00ff00" /> -->
+
+  
+  <svg id="widebar" x="50%" y="0" width="50%-60" height="100%">
+    <!-- Steps Widget -->
+    <svg x="0" y="5" width="100%" height="54">
+      <image href="icons_invert/icon_steps.png"
+             width="48" height="48"
+             x="50%-24" y="-12" 
+             fill="#ff5500"
+             load="sync"/>
+      <text id="steps_text" class="widget_text" x="50%" y="53" fill="#ffffff">0</text>
+    </svg>
+    
+    <!-- Calories Widget -->
+    <svg x="0" y="85" width="100%" height="69">
+      <image href="icons_invert/icon_calories.png"
+             width="48" height="48"
+             x="50%-24" y="-4"
+             fill="#ff5500" load="sync"/>
+      <text id="calories_text" class="widget_text" x="50%" y="68" fill="#ffffff">--</text>
+    </svg>
+    
+    <!-- Heart Rate Widget -->
+    <svg x="0" y="100%-68" width="100%" height="62">
+      <image href="icons_invert/icon_heart.png"
+             width="48" height="48"
+             x="50%-24" y="-7"
+             fill="#ff5500" load="sync"/>
+      <text id="heartRate_text" class="widget_text" x="50%" y="61" fill="#ffffff">--</text>
+    </svg>
+  </svg>
+  
+  <svg id="sidebar" x="100%-60" y="0" width="60" height="100%">
+    <rect y="0" x="0" width="100%" height="100%" fill="#ff5500" />
+    
+    <!--  Weather Widget   -->
+<!--     <svg x="0" y="5" width="100%" height="74">
+      <image href="icons/icon_partly_cloudy.png" width="48" height="48" x="50%-24" y="0"/>
+      <text class="widget_text" x="50%" y="73">75&deg;</text>
+    </svg> -->
+    
+        <!--  Stairs Widget   -->
+    <svg x="0" y="5" width="100%" height="74">
+      <image href="icons/icon_stairs.png" width="48" height="48" x="50%-24" y="0"/>
+      <text id="stairs_text" class="widget_text" x="50%" y="73">0</text>
+    </svg>
+    
+    <!--  Date Widget    -->
+    <svg x="0" y="100%-103" width="100%" height="97">
+      <text id="date_dayOfWeek" class="widget_text" x="50%" y="20"></text>
+      <image href="icons/icon_calendar.png" width="48" height="48" x="50%-24" y="24"/>
+      <text id="date_dayOfMonth" class="widget_text" x="50%" y="62"></text>
+      <text id="date_Month" class="widget_text" x="50%" y="96"></text>
+    </svg>
+    
+  </svg>
+
+</svg>
