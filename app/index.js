@@ -58,7 +58,7 @@ clock.ontick = (evt) => {
   digit_h2.href = `digits/default/${hours[1]}.png`;
   digit_m1.href = `digits/default/${mins[0]}.png`;
   digit_m2.href = `digits/default/${mins[1]}.png`;
-
+  
   
   // while we're at it, update the date widget
   date_dayOfWeek.text = weekday_names['en_US'][now.getDay()];
