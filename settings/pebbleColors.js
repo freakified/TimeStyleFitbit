@@ -69,4 +69,4 @@ const pebbleColors = [
   { name: sneakySpacer, color: '#FF0055' },
 ];
 
-export default pebbleColors;
+export { pebbleColors, sneakySpacer };
