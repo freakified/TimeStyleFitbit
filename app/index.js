@@ -1,12 +1,51 @@
+import { me } from "appbit";
 import clock from 'clock';
 import document from 'document';
 import { today } from 'user-activity';
 import { HeartRateSensor } from "heart-rate";
 import { preferences } from 'user-settings';
-import { language_names, weekday_names, month_names } from './localDates'
+import * as fs from "fs";
+import * as messaging from 'messaging';
+import { language_names, weekday_names, month_names } from './localDates';
 import * as util from '../common/utils';
 
-// Update the clock every minute
+// BEGIN settings nonsense
+
+const SETTINGS_TYPE = "cbor";
+const SETTINGS_FILE = "settings.cbor";
+
+let settings = loadSettings();
+console.log("the settings are...")
+console.log(JSON.stringify(settings));
+  
+me.onunload = saveSettings;
+
+function loadSettings() {
+    try {
+        return fs.readFileSync(SETTINGS_FILE, SETTINGS_TYPE);
+    } catch (ex) {
+        // Defaults
+        return {
+            hideLeadingZero: 'false',
+            fakeDefaults: 'true',
+        }
+    }
+}
+
+function saveSettings() {
+    fs.writeFileSync(SETTINGS_FILE, settings, SETTINGS_TYPE);
+}
+
+// END settings nonsense
+
+
+messaging.peerSocket.onmessage = (evt) => {
+  settings[evt.data.key] = evt.data.newValue;
+  //myElement.style.fill = evt.data.value;
+  // redo settings...i guess?
+}
+
+// Update the clock every second
 clock.granularity = 'seconds';
 
 let hrm = new HeartRateSensor();
@@ -47,10 +86,10 @@ const stairs_text = document.getElementById('stairs_text');
 clock.ontick = (evt) => {
   const now = evt.date;
   const hours = util.zeroPad(
-    (preferences.clockDisplay === '12h')
+    (preferences.clockDisplay === '24h')
       ? now.getHours()
       : now.getHours() % 12 || 12
-  );
+  , settings.hideLeadingZero === 'true' ? ' ' : '0');
   
   const mins = util.zeroPad(now.getMinutes());
   
@@ -72,3 +111,4 @@ clock.ontick = (evt) => {
   
   hrm.start();
 }
+

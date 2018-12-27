@@ -1,7 +1,7 @@
 // Add zero in front of numbers < 10
-export function zeroPad(i) {
+export function zeroPad(i, spacer = '0') {
   if (i < 10) {
-    i = "0" + i;
+    i = spacer + i;
   }
   return "" + i;
 }
