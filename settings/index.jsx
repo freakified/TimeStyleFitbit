@@ -61,7 +61,7 @@ const renderThemeSelector = (currentSelection, props) => (
 
 const getCurrentSetting = (settingsKey, props) => {
   const currentSetting = JSON.parse(props.settings[settingsKey] || 'false');
-  console.log('the current setting is ' + currentSetting);
+  console.log(`${settingsKey} is ${props.settings[settingsKey]}`);
 
   if (currentSetting === false) {
     return defaultSettings[settingsKey];

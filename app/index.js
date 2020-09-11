@@ -1,11 +1,11 @@
-import { me } from "appbit";
+import { me } from 'appbit';
 import clock from 'clock';
 import document from 'document';
+import { inbox } from 'file-transfer';
 import { today } from 'user-activity';
 import { HeartRateSensor } from "heart-rate";
 import { preferences } from 'user-settings';
-import * as fs from "fs";
-import * as messaging from 'messaging';
+import { readFileSync, writeFileSync, renameSync, unlinkSync } from "fs";
 import { language_names, weekday_names, month_names } from './localDates';
 import * as util from '../common/utils';
 
@@ -14,36 +14,47 @@ import * as util from '../common/utils';
 const SETTINGS_TYPE = "cbor";
 const SETTINGS_FILE = "settings.cbor";
 
-let settings = loadSettings();
-console.log("the settings are...")
-console.log(JSON.stringify(settings));
-  
+let settings = {};
+
+const loadSettings = () => {
+  try {
+    return readFileSync(SETTINGS_FILE, SETTINGS_TYPE);
+  } catch (ex) {
+    // Defaults
+    return {
+      hideLeadingZero: false,
+      fakeDefaults: true,
+    }
+  }
+}
+
+const saveSettings = () => {
+  writeFileSync(SETTINGS_FILE, settings, SETTINGS_TYPE);
+}
+
+const applySettings = () => {
+  settings = loadSettings();
+  console.log(`settings are ${JSON.stringify(settings)}`);
+}
+
+const processAllFiles = () => {
+  const tempname = 'tempfile';
+  for (let filename; filename = inbox.nextFile(tempname);) {
+    if (filename === SETTINGS_FILE) {
+      renameSync(tempname, filename);
+      applySettings();
+    } else {
+      unlinkSync(tempname);
+    }
+  }
+}
+
+inbox.addEventListener('newfile', processAllFiles);
+processAllFiles();
+
 me.onunload = saveSettings;
 
-function loadSettings() {
-    try {
-        return fs.readFileSync(SETTINGS_FILE, SETTINGS_TYPE);
-    } catch (ex) {
-        // Defaults
-        return {
-            hideLeadingZero: 'false',
-            fakeDefaults: 'true',
-        }
-    }
-}
-
-function saveSettings() {
-    fs.writeFileSync(SETTINGS_FILE, settings, SETTINGS_TYPE);
-}
-
 // END settings nonsense
-
-
-messaging.peerSocket.onmessage = (evt) => {
-  settings[evt.data.key] = evt.data.newValue;
-  //myElement.style.fill = evt.data.value;
-  // redo settings...i guess?
-}
 
 // Update the clock every second
 clock.granularity = 'seconds';
@@ -89,10 +100,10 @@ clock.ontick = (evt) => {
     (preferences.clockDisplay === '24h')
       ? now.getHours()
       : now.getHours() % 12 || 12
-  , settings.hideLeadingZero === 'true' ? ' ' : '0');
-  
+  , settings.hideLeadingZero === true ? ' ' : '0');
+
   const mins = util.zeroPad(now.getMinutes());
-  
+
   digit_h1.href = `digits/default/${hours[0]}.png`;
   digit_h2.href = `digits/default/${hours[1]}.png`;
   digit_m1.href = `digits/default/${mins[0]}.png`;
